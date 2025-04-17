@@ -4,7 +4,7 @@
 into the {body} tag of the default.hbs template --}}
 
 {{#cartanza_product}}
-    <div class="cartanza-product-container" style="display:flex;justify-content: space-between;margin: auto;max-width: var(--container-width);width: 100%;">
+    <div class="cartanza-product-container" style="display:flex;justify-content: space-between;margin: auto;margin-top: 10%;max-width: var(--container-width);width: 100%;">
         <div class="cartanza-product-image-container" style="display:flex;width:50%;">
             <div class="cartanza-product-image-picker-container" style="width:25%;">
             <ul class="" role="" style="list-style-type: none;" id="product-image-picker">
@@ -16,7 +16,7 @@ into the {body} tag of the default.hbs template --}}
             {{/foreach}}
             </ul>
             </div>
-            <div class="cartanza-product-image-container" style="width:80%;margin-top:1em;">
+            <div class="cartanza-product-image-container" style="width:80%;">
                 <img class="" src="/content/images/products/{{img_url images.[0].src}}" alt="{{tittle}}" id="product-image-target" style="width: 100%;">
             </div>
         </div>
@@ -28,6 +28,42 @@ into the {body} tag of the default.hbs template --}}
                 <span class=""><span class="money">{{formatPrice variants.[0].price 'USD'}}</span></span>
             </span>
             <p>{{{description}}}</p>
+            {{#if event}}
+                <br/>
+                {{#foreach variants}}
+                    <p> 
+                        {{#if (gt inventory_quantity 0)}}
+                            {{#if optiononevalue.value}}
+                                {{ optiononevalue.value }}
+                            {{else}}
+                                {{../title}}
+                            {{/if}}
+                            {{#if optiontwovalue.value}}
+                                / {{ optiontwovalue.value }}
+                            {{/if}}
+                            {{#if optionthreevalue.value}}
+                                / {{ optionthreevalue.value }}
+                            {{/if}}
+                        {{ else }}
+                            {{#if optiononevalue.value}}
+                                {{ optiononevalue.value }}
+                            {{else}}
+                                {{../title}}
+                            {{/if}}
+                            {{#if optiontwovalue.value}}
+                                / {{ optiontwovalue.value }}
+                            {{/if}}
+                            {{#if optionthreevalue.value}}
+                                / {{ optionthreevalue.value }}
+                            {{/if}} - Sold out
+                        {{/if}}
+                    </p>
+                    <p>
+                        Starts: {{ date starts_at format="MMMM D, YYYY \a\t h:mm A" }}<br/>
+                        Ends: {{ date ends_at format="MMMM D, YYYY \a\t h:mm A" }}<br/>
+                    </p>
+                {{/foreach}}
+            {{/if}}
             <div class="cartanza-product-form-container">
                 <form action="/cart/add" method="post" enctype="multipart/form-data" id="form_buy">
                 <div class="cartanza-product-form-select-container" style="margin: 20px;border: 1px solid #e6e6e6 !important;border-radius: 2px;">
