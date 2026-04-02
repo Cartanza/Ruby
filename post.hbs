@@ -1,20 +1,19 @@
-{{!< default}}
-
+{{#*inline "body"}}
 <main class="site-main">
 
-    {{#post}}
+    {{#with post}}
 
     <article class="gh-article {{post_class}}">
 
         <header class="gh-article-header gh-canvas">
             <span class="gh-article-meta"{{#if primary_tag.accent_color}} style="--tag-color: {{primary_tag.accent_color}};"{{/if}}>
-                By {{authors}}
+                By {{#foreach authors}}{{#if @first}}{{name}}{{else}}, {{name}}{{/if}}{{/foreach}}
                 {{#if primary_tag}}
                     in
                     <a class="gh-article-tag" href="{{primary_tag.url}}">{{primary_tag.name}}</a>
                 {{/if}}
                 —
-                <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="DD MMM YYYY"}}</time>
+                <time datetime="{{date published_at format="YYYY-MM-DD"}}">{{date published_at format="DD MMM YYYY"}}</time>
             </span>
 
             <h1 class="gh-article-title">{{title}}</h1>
@@ -23,16 +22,16 @@
                 <p class="gh-article-excerpt">{{custom_excerpt}}</p>
             {{/if}}
 
-            {{> "post-image"}}
+            {{> partials/post-image}}
         </header>
 
         <div class="gh-content gh-canvas">
-            {{content}}
+            {{{content}}}
         </div>
 
     </article>
 
-    {{> "post-navigation"}}
+    {{> partials/post-navigation}}
 
     {{#if comments}}
         <div class="gh-comments gh-canvas">
@@ -40,10 +39,12 @@
         </div>
     {{/if}}
 
-    {{/post}}
+    {{/with}}
 
-    {{#if @custom.show_related_posts}}
-        {{> "related-posts"}}
+    {{#if @root.custom.show_related_posts}}
+        {{> partials/related-posts}}
     {{/if}}
 
 </main>
+{{/inline}}
+{{> default}}
